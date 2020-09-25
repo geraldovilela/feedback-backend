@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
-    "dev:migrate": "npx knex migrate:latest --knexfile knexfile.ts",
-    "dev:migraterollback":"npx knex migrate:rollback --knexfile knexfile.ts"
+    "knex:migrate": "npx knex migrate:latest --knexfile knexfile.ts",
+    "knex:rollback":"npx knex migrate:rollback --knexfile knexfile.ts"
   },
   "dependencies": {
     "express": "^4.17.1",
