@@ -1,7 +1,7 @@
 import * as Knex from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('feedback', table => {
+  return knex.schema.createTable('feedbacks', table => {
     table.uuid('feedback_id').primary();
     table.string('user_post').notNullable();
     table.string('user_evaluated').notNullable();
@@ -9,10 +9,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string('points_to_keep');
     table.string('sugestions');
     table.string('final_feedback').notNullable();
-    table.timestamps();
+    table.timestamps(true, true);
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists('feedback');
+  return knex.schema.dropTableIfExists('feedbacks');
 }
