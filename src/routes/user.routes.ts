@@ -1,44 +1,48 @@
 import { Router } from 'express';
-
-import UserRepository from '../repositories/UserRepository';
+import connection from '../database/connection';
+import User from '../models/User';
 
 const userRouter = Router();
 
-const userRepository = new UserRepository();
-
-userRouter.post('/create', (request, response) => {
+userRouter.post('/create', async (request, response) => {
   try {
-    const { name, password, email } = request.body;
+    const { name, password, email, login } = request.body;
 
-    const user = {
+    const user = new User({
       name,
       password,
       email,
-    };
-    const newUser = userRepository.create(user);
+      login,
+    });
+
+    const newUser = await connection('users').insert(user);
     return response.status(201).json(newUser);
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
 });
 
-userRouter.get('/list', (request, response) => {
+userRouter.get('/list', async (request, response) => {
   try {
-    return response.json(userRepository.all());
+    const users = await connection('users').select('*');
+    return response.json(users);
   } catch (err) {
     return response.status(400).json({ errr: err.message });
   }
 });
 
-userRouter.get('/list/:id', (request, response) => {
+userRouter.get('/list/:id', async (request, response) => {
   try {
     const { id } = request.params;
 
-    const userData = userRepository.find(id);
+    const userData = await connection('users')
+      .select('*')
+      .where('id', id)
+      .first();
+
     if (userData) {
       return response.status(200).json(userData);
     }
-    throw Error;
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
