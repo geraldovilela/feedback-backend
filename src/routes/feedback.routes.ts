@@ -12,7 +12,10 @@ feedbackRouter.get('/:id', async (request, response) => {
 
     return response.status(200).json(feedbacks);
   } catch (err) {
-    return response.status(401).json({ error: err.message });
+    return response.status(401).json({
+      error: err.message,
+      custom: 'List 1 Feedbacks Error',
+    });
   }
 });
 
@@ -40,7 +43,9 @@ feedbackRouter.post('/', async (request, response) => {
 
     return response.status(201).json(newFeedback);
   } catch (err) {
-    return response.status(400).json({ erro: err.message });
+    return response
+      .status(400)
+      .json({ erro: err.message, custom: 'Create Feedbacks Error' });
   }
 });
 
@@ -49,7 +54,9 @@ feedbackRouter.get('/', async (request, response) => {
     const data = await connection('feedbacks').select('*');
     return response.status(200).json(data);
   } catch (err) {
-    return response.status(400).json({ error: err.message });
+    return response
+      .status(400)
+      .json({ error: err.message, custom: 'List all Feedbacks Error' });
   }
 });
 
@@ -109,7 +116,9 @@ feedbackRouter.put('/:id', async (request, response) => {
     return response.json(data);
   } catch (err) {
     await trx.rollback();
-    return response.status(400).json({ error: err.message });
+    return response
+      .status(400)
+      .json({ error: err.message, custom: 'Update Feedbacks Error' });
   }
 });
 export default feedbackRouter;

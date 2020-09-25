@@ -1,13 +1,14 @@
 import { Router } from 'express';
+
 import connection from '../database/connection';
 import User from '../models/User';
 
 const userRouter = Router();
 
 userRouter.post('/create', async (request, response) => {
-  try {
-    const { name, password, email, login } = request.body;
+  const { name, password, email, login } = request.body;
 
+  try {
     const user = new User({
       name,
       password,
@@ -18,7 +19,9 @@ userRouter.post('/create', async (request, response) => {
     const newUser = await connection('users').insert(user);
     return response.status(201).json(newUser);
   } catch (err) {
-    return response.status(400).json({ error: err.message });
+    return response
+      .status(400)
+      .json({ error: err.message, custom: 'Create user Error' });
   }
 });
 
@@ -43,8 +46,10 @@ userRouter.get('/list/:id', async (request, response) => {
     if (userData) {
       return response.status(200).json(userData);
     }
+    return response.status(401);
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
 });
+
 export default userRouter;
