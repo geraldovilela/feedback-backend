@@ -6,7 +6,7 @@ import User from '../models/User';
 const userRouter = Router();
 
 userRouter.post('/create', async (request, response) => {
-  const { name, password, email, login } = request.body;
+  const { name, login, password, email } = request.body;
 
   try {
     const user = new User({
